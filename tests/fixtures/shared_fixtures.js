@@ -3,14 +3,13 @@ import AuthenticationApi from "../../api_objects/AuthenticationApi.js";
 import HomePage from "../../page_objects/HomePage.js";
 import LoginPage from "../../page_objects/LoginPage.js";
 import DashBoardPage from "../../page_objects/DashBoardPage.js";
-const userCredentials = require("../../test_data/userCredentials.json");
 
 export const test = base.extend({
   accessToken: async ({ request }, use) => {
     const authenticationApi = new AuthenticationApi(request);
     const accessToken = await authenticationApi.loginUser(
-      userCredentials.admin.email,
-      userCredentials.admin.password
+      process.env.ADMIN_EMAIL,
+      process.env.ADMIN_PASSWORD
     );
     await use(accessToken);
   },
@@ -24,7 +23,7 @@ export const test = base.extend({
 
   home: async ({ page }, use) => {
     const home = new HomePage(page);
-    page.goto('/');
+    await page.goto(process.env.BASE_URL);
     await use(home);
   },
 
