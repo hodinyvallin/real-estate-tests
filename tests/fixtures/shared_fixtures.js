@@ -2,7 +2,7 @@ import { test as base } from "@playwright/test";
 import AuthenticationApi from "../../api_objects/AuthenticationApi.js";
 import HomePage from "../../page_objects/HomePage.js";
 import LoginPage from "../../page_objects/LoginPage.js";
-import DashBoardPage from "../../page_objects/DashboardPage.js";
+import DashBoardPage from "../../page_objects/DashBoardPage.js";
 const userCredentials = require("../../test_data/userCredentials.json");
 
 export const test = base.extend({
