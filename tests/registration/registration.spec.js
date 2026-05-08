@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import HomePage from "../../page_objects/HomePage";
 import RegisterPage from "../../page_objects/RegisterPage";
-import DashBoardPage from "../../page_objects/DashboardPage";
+import DashBoardPage from "../../page_objects/DashBoardPage";
 import AuthenticationApi from "../../api_objects/AuthenticationApi";
 import UsersApi from "../../api_objects/UsersApi";
 const userCredentials = require('../../test_data/userCredentials.json');
