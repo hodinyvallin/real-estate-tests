@@ -4,7 +4,7 @@ const userCredentials = require("../../test_data/userCredentials.json");
 test.describe("Login", () => {
   test("User can login with valid credentials", async ({ home, login, dashboard, page }) => {
     await home.clickLoginLink();
-    await login.loginUser(userCredentials.admin.email, userCredentials.admin.password);
+    await login.loginUser(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD);
     await page.waitForLoadState("domcontentloaded");
 
     await expect(dashboard.userFullName).toHaveText(`${userCredentials.admin.firstName} ${userCredentials.admin.lastName}`);

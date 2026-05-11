@@ -11,13 +11,13 @@ test.describe("Registration", () => {
 
   test.beforeEach('Authenticate admin and set up API request objects', async ({ page, request }) => {
     authenticationApi = new AuthenticationApi(request);
-    accessToken = await authenticationApi.loginUser(userCredentials.admin.email, userCredentials.admin.password);
+    accessToken = await authenticationApi.loginUser(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD);
     usersApi = new UsersApi(request, accessToken);
 
     home = new HomePage(page);
     register = new RegisterPage(page);
 
-    await page.goto("/");
+    await page.goto(process.env.BASE_URL);
     await home.clickRegisterLink();
   });
   
@@ -74,7 +74,7 @@ test.describe("Registration", () => {
       userCredentials.admin.firstName,
       userCredentials.admin.lastName,
       "admin.gmail.com",
-      userCredentials.admin.password,
+      process.env.ADMIN_PASSWORD,
     );
     await page.waitForLoadState("domcontentloaded");
 
