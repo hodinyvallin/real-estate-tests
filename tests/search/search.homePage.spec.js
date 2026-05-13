@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures/search_fixtures";
+import { test, expect } from "../fixtures/searchFixtures";
 
 test.describe('Search on HomePage', () => {
   test.beforeEach('Set page to dark theme', async ({ home }) => {
@@ -27,7 +27,7 @@ test.describe('Search on HomePage', () => {
     expect(testListing.title).toEqual(actualCardTitle);
 
     await featuredListings.openMoreInfo();
-    const actualTitle = await listingDetails.title.textContent();
+    const actualTitle = await listingDetails.getTitle();
     const actualAddress = await listingDetails.getAddress();
     const actualPrice = await listingDetails.getPrice();
     const actualSqft = await listingDetails.getSqft();

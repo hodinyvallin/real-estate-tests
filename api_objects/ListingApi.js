@@ -18,10 +18,10 @@ class ListingApi {
       price: faker.number.int({min: 100_000, max: 10_000_000}),
       zipCode: faker.number.int({min: 2000, max: 9000}),
       state: "CA",
-      city: "Pigsville",
-      address: `${faker.number.int({min: 100, max: 999})} Piggly St`,
-      description: "Welcome to my pretty piggly pink pad.",
-      title: `Piggly Pink Pad ${faker.number.int({min: 1000, max: 10_000})}`,
+      city: "Pigletville",
+      address: `${faker.number.int({min: 100, max: 999})} Piglet St`,
+      description: "Welcome to my pretty Piglet-themed pink pad.",
+      title: `Piglet's Pink Pad ${faker.number.int({min: 1000, max: 10_000})}`,
       isPublished: true
     };
 
