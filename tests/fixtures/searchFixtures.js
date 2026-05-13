@@ -1,7 +1,7 @@
-import { test as base } from "./shared_fixtures.js";
+import { test as base } from "./sharedFixtures.js";
 import ListingApi from "../../api_objects/ListingApi.js";
-import FeaturedListingsPage from '../../page_objects/FeaturedListingsPage';
-import ListingDetailsPage from '../../page_objects/ListingDetailsPage';
+import FeaturedListingsPage from '../../page_objects/FeaturedListingsPage.js';
+import ListingDetailsPage from '../../page_objects/ListingDetailsPage.js';
 import { create } from "node:domain";
 
 export const test = base.extend({

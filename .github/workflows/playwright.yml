@@ -11,6 +11,13 @@ jobs:
       BASE_URL: ${{ secrets.BASE_URL }}
       ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
       ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      ADMIN_FIRST_NAME: ${{ secrets.ADMIN_FIRST_NAME }}
+      ADMIN_LAST_NAME: ${{ secrets.ADMIN_LAST_NAME }}
+      ADMIN_ROLE: ${{ secrets.ADMIN_ROLE }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      REALTOR_EMAIL: ${{ secrets.REALTOR_EMAIL }}
+      REALTOR_PASSWORD: ${{ secrets.REALTOR_PASSWORD }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4

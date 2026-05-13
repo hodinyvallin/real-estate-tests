@@ -2,6 +2,7 @@ import { test as base } from "@playwright/test";
 import AuthenticationApi from "../../api_objects/AuthenticationApi.js";
 import HomePage from "../../page_objects/HomePage.js";
 import LoginPage from "../../page_objects/LoginPage.js";
+import RegisterPage from "../../page_objects/RegisterPage.js";
 import DashBoardPage from "../../page_objects/DashBoardPage.js";
 
 export const test = base.extend({
@@ -23,7 +24,7 @@ export const test = base.extend({
 
   home: async ({ page }, use) => {
     const home = new HomePage(page);
-    await page.goto(process.env.BASE_URL);
+    await page.goto('/');
     await use(home);
   },
 
@@ -32,10 +33,15 @@ export const test = base.extend({
     await use(login);
   },
 
+  register: async ({ page }, use) => {
+    const register = new RegisterPage(page);
+    await use(register);
+  },
+
   dashboard: async ({ page }, use) => {
     const dashboard = new DashBoardPage(page);
     await use(dashboard);
-  },
+  }
 });
 
 export { expect } from "@playwright/test";
