@@ -108,4 +108,6 @@ To view a HTML report of the test run:
 
 > 14 tests passed in CI
 
+![test results](./results.png)
+
 ---
