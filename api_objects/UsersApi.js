@@ -6,9 +6,9 @@ class UsersApi {
 
   async getUserData(userEmail) {
     const response = await this.request.get("/api/users", {
-      headers:  { 
-        authorization: `Bearer ${this.accessToken}` 
-      }
+      headers: {
+        authorization: `Bearer ${this.accessToken}`,
+      },
     });
     const body = await response.json();
     let targetUserData;
@@ -27,13 +27,7 @@ class UsersApi {
     return userData.id;
   }
 
-  async createUser(
-    firstName,
-    lastName,
-    email,
-    password,
-    isRealtor = "false",
-  ) {
+  async createUser(firstName, lastName, email, password, isRealtor = "false") {
     const response = await this.request.post("/api/users", {
       data: {
         username: firstName,
@@ -43,9 +37,9 @@ class UsersApi {
         avatarUrl: "",
         isRealtor: isRealtor,
       },
-      headers: { 
-        authorization: `Bearer ${this.accessToken}` 
-      }
+      headers: {
+        authorization: `Bearer ${this.accessToken}`,
+      },
     });
   }
 

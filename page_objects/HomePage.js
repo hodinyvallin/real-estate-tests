@@ -2,20 +2,20 @@ import SearchComponent from "./page_components/SearchComponent";
 
 class HomePage extends SearchComponent {
   constructor(page) {
-    super(page)
-    
-    this.loginLink = page.getByRole('link', { name: 'Login' });
-    this.registerLink = page.getByRole('link', { name: 'Register' });
+    super(page);
+
+    this.loginLink = page.getByRole("link", { name: "Login" });
+    this.registerLink = page.getByRole("link", { name: "Register" });
   }
 
   async clickLoginLink() {
     await this.loginLink.click();
-    await this.page.waitForURL('**/auth/login');
+    await this.page.waitForURL("**/auth/login");
   }
 
   async clickRegisterLink() {
     await this.registerLink.click();
-    await this.page.waitForURL('**/auth/register');
+    await this.page.waitForURL("**/auth/register");
   }
 }
 

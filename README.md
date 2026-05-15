@@ -1,51 +1,111 @@
-## Automation framework for a real estate platform 🏠
+## E2E automation for a real estate platform 🏠
+
+> E2E tests for the core functionalities of a real estate platform.
+> Uses Playwright, JavaScript, GitHub Actions, GitHub Secrets, dotenv, and faker.
+
+---
 
 ### Tests
+
 - Login
-  - Should log in
-  - Should log out
+  - User can log in with valid credentials
+  - User can log out
 - Registration
-  - Should register a new account
-  - Should not register with an existing email
-  - Should not register with fields left blank
-  - Should not register with invalid email
+  - User can register a new account
+  - Registration fails when user registers an existing email account
+  - Registration fails when user leaves required fields blank
+  - Registration fails when user inputs invalid email
 - Search (on Home page and Featured Listings page)
-  - Should search by title
-  - Should search by bedrooms
-  - Should search by city
-  - Should search by price
+  - User can search by title
+  - User can search by bedroom count
+  - User can search by city
+  - User can search by price
 
-### Page Objects & Fixtures
-- All pages in these tests have their own POM (with locators and methods).
-- Some pages share/inherit from a common partial (`SearchComponent`).
-- Fixtures contain most set-up and tear-down steps, such as page object instantiation, retrieving an access token, etc.
-- Although I usually keep set-up/tear-down API requests in fixtures, I decided to use API POMs here (in `api_objects`), for steps like test user creation, listing creation, and deletion.
+---
 
-### Test Listing Generation
-- New test listing data (specifically numeric data such as price, square ft, etc.) is generated through `faker`.
-- The test listing's image file is streamed into the API request through `fs`.
+### Page Object Model
+
+- The locators and actions for each page are encapsulated in a page object.
+- Some pages which share common locators and actions inherit from the partial `SearchComponent`.
+- The actions for the API requests are encapsulated in API objects (basically POM for APIs).
+- Although I prefer to keep set-up/tear-down API actions in fixtures, I decided to follow an API POM design for steps like:
+  - Authenticating a user (`AuthenticationApi`)
+  - Creating and deleting a mock user account (`UsersApi`)
+  - Creating and deleting a mock real estate listing (`ListingApi`)
+
+---
+
+### Fixtures
+
+- `sharedFixtures` contain common set-up steps such as:
+  - Page object instantiation
+  - Retrieving an access token
+  - Authenticating the context/current session
+- `searchFixtures` extend the base further to contain search-related set-up and tear-down:
+  - Create, use in test, then delete a mock listing
+
+---
+
+### Mock Listing Generation
+
+- New mock listing data (specifically numeric data like price, lot size, etc.) is generated through the `faker` library.
+- The .png file is streamed into the API request through the `fs` module, so that the server receives and displays the image.
+
+---
+
+### Authentication Handling
+
+- Via `AuthenticationApi`, credentials are read from environment variables and exchanged for an access token, keeping the credentials hidden and auth logic reusable.
+- Via `authenticatedPage` fixture, the access token is injected into the browser's `localStorage` to authenticate the context, bypassing the login UI entirely.
+
+---
+
+### Secrets/Credential Management
+
+- `dotenv` gives tests access to the credentials in my local `.env` file.
+- Since `.env` is hidden from this remote repo, the credentials are also stored in GitHub Secrets.
+
+---
 
 ### Configuration
+
 - Tests are configured to run with 1 worker locally and on CI.
   - 1 worker avoids resource contention from parallel runs, which causes slower load times on the Featured Listings page and a longer overall runtime.
 - Tests only run in Chromium.
 
-### Secrets/Credential Management
-- `dotenv` gives tests access to the secrets in my local `.env` file.
-- Since `.env` is hidden from the repo, the same secrets are also stored in GitHub Secrets.
+---
 
-### Run in GitHub Actions
-- All tests run headlessly via a Playwright Tests workflow in GitHub Actions on every pull request.
-  - The tests can be run manually by a click on the 'Run workflow' button too.
-  - Note: a Node.js version deprecation warning may appear in the logs.
-- If you happen to have the secrets in `.env`, you can run tests locally:
-  - Clone this repo to your local.
-  - Set up the secrets in your local `.env` file, then (please) add `.env` to `.gitignore`.
-  - Command `npx playwright test` or (my favorite) `npx playwright test --ui` to run all tests.
+### Run in CI
 
-### CI run via GitHub Actions: 14 tests passed
+To run all tests in GitHub Actions:
 
-<img width="1170" height="955" alt="Screenshot 2026-05-13 at 1 21 12 PM" src="https://github.com/user-attachments/assets/3a4f07d5-1996-4d75-ab85-54e8f1267a4d" />
+1. Go to Actions
+2. Go to the Playwright Tests workflow on the left panel
+3. Click on the 'Run workflow' button on the top right
 
+Note that:
 
+- Tests run headlessly (invisibly) in CI.
+- The `workflow_dispatch` event trigger enables us to manually run tests with a click on the 'Run workflow' button.
+- All tests will run on every pull request via the same workflow.
 
+---
+
+### Test Report
+
+To view a HTML report of the test run:
+
+1. Go to Actions
+2. Click on the most recent run of the Playwright Tests workflow
+3. Go to Summary on the left panel
+4. Scroll down to Artifacts
+5. Download playwright-report.zip
+6. Open the .html file to view the test report
+
+---
+
+### Test Results
+
+> 14 tests passed in CI
+
+---

@@ -10,21 +10,21 @@ export const test = base.extend({
     const authenticationApi = new AuthenticationApi(request);
     const accessToken = await authenticationApi.loginUser(
       process.env.ADMIN_EMAIL,
-      process.env.ADMIN_PASSWORD
+      process.env.ADMIN_PASSWORD,
     );
     await use(accessToken);
   },
-  
+
   authenticatedPage: async ({ accessToken, page, context }, use) => {
     await context.addInitScript((token) => {
-      window.localStorage.setItem('accessToken', token);
+      window.localStorage.setItem("accessToken", token);
     }, accessToken);
     await use(page);
   },
 
   home: async ({ page }, use) => {
     const home = new HomePage(page);
-    await page.goto('/');
+    await page.goto("/");
     await use(home);
   },
 
@@ -41,7 +41,7 @@ export const test = base.extend({
   dashboard: async ({ page }, use) => {
     const dashboard = new DashBoardPage(page);
     await use(dashboard);
-  }
+  },
 });
 
 export { expect } from "@playwright/test";

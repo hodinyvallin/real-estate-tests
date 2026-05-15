@@ -1,44 +1,56 @@
 import { test, expect } from "../fixtures/sharedFixtures";
 import UsersApi from "../../api_objects/UsersApi";
-const userCredentials = require('../../test_data/userCredentials.json');
+import userData from "../../test_data/mockUserData.json";
 
 test.describe("Registration", () => {
   let usersApi, userId;
 
-  test.beforeEach('Authenticate admin and set up API request objects', async ({ page, request, accessToken, home }) => {
-    const adminAccessToken = accessToken;
-    usersApi = new UsersApi(request, adminAccessToken);
+  test.beforeEach(
+    "Authenticate admin and set up API request objects",
+    async ({ page, request, accessToken, home }) => {
+      const adminAccessToken = accessToken;
+      usersApi = new UsersApi(request, adminAccessToken);
 
-    await home.clickRegisterLink();
-  });
-  
-  test("User can register new account", async ({ page, register, dashboard }) => {
+      await home.clickRegisterLink();
+    },
+  );
+
+  test("User can register new account", async ({
+    page,
+    register,
+    dashboard,
+  }) => {
     await register.submitRegisterForm(
-      userCredentials.user.firstName,
-      userCredentials.user.lastName,
+      userData.user.firstName,
+      userData.user.lastName,
       process.env.USER_EMAIL,
-      process.env.USER_PASSWORD
+      process.env.USER_PASSWORD,
     );
-    await page.waitForURL('**/dashboard/user/profile')
+    await page.waitForURL("**/dashboard/user/profile");
     userId = await usersApi.getUserId(process.env.USER_EMAIL);
 
-    await expect(dashboard.userFullName).toHaveText(`${userCredentials.user.firstName} ${userCredentials.user.lastName}`);
-    await expect(dashboard.userRole).toHaveText(`role: ${userCredentials.user.role}`);
+    await expect(dashboard.userFullName).toHaveText(
+      `${userData.user.firstName} ${userData.user.lastName}`,
+    );
+    await expect(dashboard.userRole).toHaveText(`role: ${userData.user.role}`);
   });
 
-  test("Registration fails when user registers an existing email account", async ({ page, register }) => {
+  test("Registration fails when user registers an existing email account", async ({
+    page,
+    register,
+  }) => {
     await usersApi.createUser(
-      userCredentials.realtor.firstName,
-      userCredentials.realtor.lastName,
+      userData.realtor.firstName,
+      userData.realtor.lastName,
       process.env.REALTOR_EMAIL,
       process.env.REALTOR_PASSWORD,
       "true",
     );
     userId = await usersApi.getUserId(process.env.REALTOR_EMAIL);
-    
+
     await register.submitRegisterForm(
-      userCredentials.realtor.firstName,
-      userCredentials.realtor.lastName,
+      userData.realtor.firstName,
+      userData.realtor.lastName,
       process.env.REALTOR_EMAIL,
       process.env.REALTOR_PASSWORD,
       true,
@@ -48,7 +60,10 @@ test.describe("Registration", () => {
     await expect(page.getByText("Input data validation failed")).toBeVisible();
   });
 
-  test("Registration fails when user leaves required fields blank", async ({ page, register }) => {
+  test("Registration fails when user leaves required fields blank", async ({
+    page,
+    register,
+  }) => {
     await register.registerButton.click();
     await page.waitForLoadState("domcontentloaded");
 
@@ -58,7 +73,10 @@ test.describe("Registration", () => {
     await expect(page.getByText("Password is required")).toBeVisible();
   });
 
-  test("Registration fails when user inputs invalid email", async ({ page, register }) => {
+  test("Registration fails when user inputs invalid email", async ({
+    page,
+    register,
+  }) => {
     await register.submitRegisterForm(
       process.env.ADMIN_FIRST_NAME,
       process.env.ADMIN_LAST_NAME,
@@ -67,10 +85,12 @@ test.describe("Registration", () => {
     );
     await page.waitForLoadState("domcontentloaded");
 
-    await expect(page.getByText("Email must be a valid email address")).toBeVisible();
+    await expect(
+      page.getByText("Email must be a valid email address"),
+    ).toBeVisible();
   });
 
-  test.afterEach('Tear down test data if any remain', async () => {
+  test.afterEach("Tear down test data if any remain", async () => {
     if (userId !== undefined) {
       await usersApi.deleteUser(userId);
     }
